@@ -8,13 +8,18 @@ from period import Period
 
 class Course(object):
 
-    def __init__(self, name, ects, periods, description, prerequisites):
+    def __init__(self, name, ects, period, description, prerequisites):
         
         self.name = name # Name of the course
         self.ects = ects # Number of credits
-        self.periods = periods # List of Periods in which the course will be held
+        self.period = period # The periods in which the course will be held
         self.description = description # Course description
         self.prerequisites = prerequisites # WHich courses should the student have completed before attending this course
         
-        
+    def __str__(self):
+        # TODO: add period tostring
+        string = self.name + ': ' + self.ects + 'op, ' + self.period.__str__() + ', ' + self.description + ', Esitiedot: ' 
+        for each in self.prerequisites:
+            string = string + each + ', '
+        return string
         
