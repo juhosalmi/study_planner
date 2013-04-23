@@ -11,7 +11,7 @@ class Course(object):
     def __init__(self, name, ects, period, description, prerequisites):
         
         self.name = name # Name of the course
-        self.ects = ects # Number of credits
+        self.ects = int(ects) # Number of credits
         self.period = period # The periods in which the course will be held
         self.description = description # Course description
         self.prerequisites = prerequisites # WHich courses should the student have completed before attending this course

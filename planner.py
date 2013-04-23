@@ -10,8 +10,9 @@ class Planner(object):
     '''
 
 
-    def __init__(self):
-        '''
-        Constructor
-        '''
+    def __init__(self, courses, studyPlan):
+        self.courses = courses
+        self.studyPlan = studyPlan
+        
+    def scheduleUnscheduledCourses(self):
         
