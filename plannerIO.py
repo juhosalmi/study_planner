@@ -11,9 +11,6 @@ from period import Period
 from studyPlan import StudyPlan
 
 class PlannerIO(object):
-    '''
-    classdocs
-    '''
 
     # TODO: add error handling
     

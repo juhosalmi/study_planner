@@ -1,3 +1,7 @@
 matematiikka 1;10;1;2;eka matikan kurssi;
 matematiikka 2;10;3;4;toka matikan kurssi;matematiikka 1
 matematiikka 3;10;1;2;kolmas matikan kurssi;matematiikka 1, matematiikka 2
+puhekurssi;3;1;1;;
+kirjoituskurssi;3;2;2;;
+fysiikka 1;6;1;2;;
+fysiikka 2 ;6;3;4;;fysiikka 1

@@ -95,25 +95,36 @@ class StudyPlan(object):
     def setAvailableCourses(self, courses):
         self.courses = courses
         
-        
     '''
     setCreditsPerPeriod
     '''
     def setCreditsPerPeriod(self, creditsPerPeriod):
         self.creditsPerPeriod = creditsPerPeriod
-        
+    
+    '''
+    hasSatisfiedPrerequisites
+    '''
     def hasSatisfiedPrerequisites(self, courseName):
         prerequisites = self.courses[courseName].prerequisites
         year, period = self.getCourse(courseName)
         for prerequisite in prerequisites:
             yearp, periodp = self.getCourse(prerequisite)
-            if yearp == -2 or yearp > year:
+            if yearp == self.UNSCHEDULED or yearp > year or yearp == None:
                 return False
             elif yearp == year:
-                if period >= periodp:
+                if periodp >= period:
                     return False
         return True
     
-    
+    '''
+    listCourseNamesWithDissatisfiedPrerequisites
+    '''
+    def listCourseNamesWithDissatisfiedPrerequisites(self):
+        courseNames = []
+        for each in self.schedule:
+            for courseName in each.iterkeys():
+                if not self.hasSatisfiedPrerequisites(courseName):
+                    courseNames.append(courseName)
+        return courseNames
         
     

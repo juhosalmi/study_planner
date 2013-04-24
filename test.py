@@ -7,6 +7,8 @@ import unittest
 from course import Course
 from period import Period
 from studyPlan import StudyPlan
+from plannerIO import PlannerIO
+
 
 
 class Test(unittest.TestCase):
@@ -35,6 +37,15 @@ class Test(unittest.TestCase):
         year1, period1 = self.study_plan.getCourse("course")
         self.assertEqual(StudyPlan.UNSCHEDULED, year1, "Wrong year")
         self.assertEqual(None, period1, "Wrong period")
+        
+    def test_prerequisites(self):
+        plannerIO = PlannerIO()
+        studyPlan = plannerIO.loadStudyPlan('studyplan2.csv')
+        studyPlan.setAvailableCourses(plannerIO.loadCourses('courses1.csv'))
+        dissatisfied = studyPlan.listCourseNamesWithDissatisfiedPrerequisites()
+        self.assertTrue('fysiikka 2' in dissatisfied, 'something wrong with dissatisfied prerequisites')
+        self.assertTrue('matematiikka 3' in dissatisfied, 'something wrong with dissatisfied prerequisites')
+
 
 
 if __name__ == "__main__":
