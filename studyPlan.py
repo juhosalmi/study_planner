@@ -49,6 +49,7 @@ class StudyPlan(object):
     scheduleCourse
     '''
     def scheduleCourse(self, courseName, year, period):
+        courseName = str(courseName).strip()
         self.removeCourse(courseName)
         if len(self.schedule) < year+1:
             for i in range(len(self.schedule), year+1):
@@ -61,6 +62,7 @@ class StudyPlan(object):
     def getCourse(self, courseName):
         year = None # Returns None if course is not in the study plan
         period = None 
+        courseName = str(courseName)
         if courseName in self.completedCourses:
             year = self.COMPLETED
         elif courseName in self.unscheduledCourses:

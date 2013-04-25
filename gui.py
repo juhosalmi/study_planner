@@ -51,7 +51,6 @@ class StudyPlanner(QtGui.QWidget):
         
         for year in range(0, len(self.studyPlan.schedule)):
             syear = QtGui.QPushButton(str(year+1))
-            syear.clicked.connect(self.buttonClicked)
             grid.addWidget(syear, 0, year*4, 1, 4)
             I = QtGui.QPushButton('I')
             II = QtGui.QPushButton('II')
@@ -64,6 +63,7 @@ class StudyPlanner(QtGui.QWidget):
             for courseName, period in self.studyPlan.schedule[year].iteritems():
                 col = year*4+period.begin-1
                 button = CourseButton(courseName, self)
+                button.clicked.connect(self.buttonClicked)
                 colspan = period.end - period.begin + 1
                 for row in range(2, grid.rowCount()+1):
                     if row == grid.rowCount():
@@ -78,8 +78,9 @@ class StudyPlanner(QtGui.QWidget):
     def buttonClicked(self):
       
         sender = self.sender()
+        year, period = self.studyPlan.getCourse(sender.text())
+        self.studyPlan.scheduleCourse(sender.text(), year+1, period)
         print sender.text() + ' was pressed'
-        #self.statusBar().showMessage(sender.text() + ' was pressed')
         
 def main():
     
