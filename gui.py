@@ -67,6 +67,8 @@ class StudyPlanner(QtGui.QWidget):
         self.grid = QtGui.QGridLayout()
         self.setLayout(self.grid) 
         self.drawCourses()
+#        print self.grid.itemAtPosition(2,5).widget().title
+#        print range(1, 1)
         
     def drawCourses(self):
         for year in range(0, len(self.studyPlan.schedule)):
@@ -83,14 +85,19 @@ class StudyPlanner(QtGui.QWidget):
             for courseName, period in self.studyPlan.schedule[year].iteritems():
                 col = year*4+period.begin-1
                 button = CourseButton(courseName, self)
-                colspan = period.end - period.begin + 1
+                colspan = period.length()
                 for row in range(2, self.grid.rowCount()+1):
                     if row == self.grid.rowCount():
                         self.grid.addWidget(button, row, col, 1, colspan)
                         break
                     if self.grid.itemAtPosition(row, col) == None:
-                        self.grid.addWidget(button, row, col, 1, colspan)
-                        break
+                        room = True
+                        for i in range(1, colspan):
+                            if self.grid.itemAtPosition(row, col+i) != None:
+                                room = False
+                        if room:
+                            self.grid.addWidget(button, row, col, 1, colspan)
+                            break
                     
     def clearCourses(self):
         for row in range(0, self.grid.rowCount()):
