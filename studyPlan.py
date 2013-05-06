@@ -54,7 +54,12 @@ class StudyPlan(object):
         if len(self.schedule) < year+1:
             for i in range(len(self.schedule), year+1):
                 self.schedule.append({})
-        self.schedule[year][courseName] = period
+        if year == self.COMPLETED:
+            self.addCompletedCourse(courseName)
+        elif year == self.UNSCHEDULED:
+            self.addCourse(courseName)
+        else:
+            self.schedule[year][courseName] = period
         
     '''
     getCourse 

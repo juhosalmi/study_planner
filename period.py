@@ -15,7 +15,9 @@ class Period(object):
     def __init__(self, begin, end):
         self.begin = int(begin)
         self.end = int(end) 
-        
+    
+    def length(self):
+        return self.end - self.begin + 1
     
     def __str__(self):
         romans = ["I", "II", "III", "IV"]
