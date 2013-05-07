@@ -33,9 +33,6 @@ class MainWindow(QtGui.QMainWindow):
         fileMenu = menubar.addMenu('&File')
         fileMenu.addAction(openFile)       
         fileMenu.addAction(saveFile)
-        
-        self.setGeometry(300, 300, 350, 300)
-        self.setWindowTitle('File dialog')
         self.show()
         
     def openDialog(self):
