@@ -9,15 +9,51 @@ from period import Period
             
 class MainWindow(QtGui.QMainWindow):
     
-    def __init__(self, studyPlan):
+    def __init__(self, courseListFileName):
         
         super(MainWindow, self).__init__()
         
+        self.courseListFileName = courseListFileName
+        self.plannerIO = PlannerIO()
+        self.studyPlan = None
+        self.studyPlanner = None
+        
         self.setWindowTitle('Study Planner')  
-        self.studyPlan = studyPlan
+        openFile = QtGui.QAction('Open', self)
+        openFile.setShortcut('Ctrl+O')
+        openFile.setStatusTip('Open a study plan')
+        openFile.triggered.connect(self.openDialog)
+        
+        saveFile = QtGui.QAction('Save', self)
+        saveFile.setShortcut('Ctrl+S')
+        saveFile.setStatusTip('Save the study plan')
+        saveFile.triggered.connect(self.saveDialog)
+
+        menubar = self.menuBar()
+        fileMenu = menubar.addMenu('&File')
+        fileMenu.addAction(openFile)       
+        fileMenu.addAction(saveFile)
+        
+        self.setGeometry(300, 300, 350, 300)
+        self.setWindowTitle('File dialog')
+        self.show()
+        
+    def openDialog(self):
+
+        fname = QtGui.QFileDialog.getOpenFileName(self, 'Open file', 
+                'studyplan.csv')
+        
+        self.studyPlan = self.plannerIO.loadStudyPlan(fname)
+        self.studyPlan.setAvailableCourses(self.plannerIO.loadCourses(self.courseListFileName))
         self.studyPlanner = StudyPlanner(self.studyPlan)
         self.setCentralWidget(self.studyPlanner)
-        self.show()
+        
+    def saveDialog(self):
+
+        fname = QtGui.QFileDialog.getSaveFileName(self, 'Save file', 
+                'studyplan.csv')
+        
+        self.plannerIO.saveStudyPlan(fname, self.studyPlan)
         
 class CourseButton(QtGui.QPushButton):
   
@@ -68,8 +104,6 @@ class StudyPlanner(QtGui.QWidget):
         self.grid = QtGui.QGridLayout()
         self.setLayout(self.grid) 
         self.drawCourses()
-#        print self.grid.itemAtPosition(2,5).widget().title
-#        print range(1, 1)
         
         
     def drawCourses(self):
@@ -114,11 +148,8 @@ class StudyPlanner(QtGui.QWidget):
         
 def main():
     
-    plannerIO = PlannerIO()
-    studyPlan = plannerIO.loadStudyPlan('aut.csv')
-    studyPlan.setAvailableCourses(plannerIO.loadCourses('autcourses.csv'))
     app = QtGui.QApplication(sys.argv)
-    window = MainWindow(studyPlan)
+    window = MainWindow('autcourses.csv') # TODO: Something less hard-coded
     menu = QtGui.QMenu()  
     sys.exit(app.exec_())
 
