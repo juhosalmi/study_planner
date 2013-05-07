@@ -25,8 +25,8 @@ class PlannerIO(object):
                 prerequisites = []
                 if row[5] != '':
                     prerequisites = row[5].split(',')
-                    for each in prerequisites:
-                        each = each.strip()
+                    for i in range(0, len(prerequisites)):
+                        prerequisites[i] = prerequisites[i].strip()
                 courses[row[0].strip()] = Course(row[0].strip(), row[1], Period(row[2],row[3]), row[4], prerequisites)
                 
             return courses

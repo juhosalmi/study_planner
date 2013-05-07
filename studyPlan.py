@@ -24,7 +24,8 @@ class StudyPlan(object):
         self.unscheduledCourses = set() # Set of unscheduled course names
         self.completedCourses = set()  # Set of completed courses
         self.courses = {} # Dictionary of all available courses accessed by name
-        self.creditsPerPeriod = 15.0 # How many credits the student wants to study per period, initially 15
+        self.minCreditsPerPeriod = 12.0 # How many credits the student wants to study per period at minimum, initially 12
+        self.maxCreditsPerPeriod = 18.0 # How many credits the student wants to study per period at maximum, initially 18
     
     
     '''
@@ -103,10 +104,16 @@ class StudyPlan(object):
         self.courses = courses
         
     '''
-    setCreditsPerPeriod
+    setMinCreditsPerPeriod
     '''
-    def setCreditsPerPeriod(self, creditsPerPeriod):
-        self.creditsPerPeriod = creditsPerPeriod
+    def setMinCreditsPerPeriod(self, minCreditsPerPeriod):
+        self.minCreditsPerPeriod = minCreditsPerPeriod
+        
+    '''
+    setMaxCreditsPerPeriod
+    '''
+    def setMaxCreditsPerPeriod(self, maxCreditsPerPeriod):
+        self.maxCreditsPerPeriod = maxCreditsPerPeriod
     
     '''
     hasSatisfiedPrerequisites
@@ -134,4 +141,16 @@ class StudyPlan(object):
                     courseNames.append(courseName)
         return courseNames
         
+    def listCreditsPerPeriod(self):
+        creditsPerPeriod = [] # list of list of periodic credits
+        for year in range(0, len(self.schedule)):
+            creditsPerPeriod.append([0.0, 0.0, 0.0, 0.0])
+            for courseName in self.schedule[year]:
+                course = self.courses[courseName]
+                courseLength = course.courseLength()
+                for i in range(course.period.begin-1, course.period.end):
+                    creditsPerPeriod[year][i] = creditsPerPeriod[year][i] + (float(course.ects)/courseLength)
+        return creditsPerPeriod
+            
+    
     

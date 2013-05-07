@@ -11,6 +11,7 @@ class Period(object):
     '''
     
     I, II, III, IV = range(1,5) # Period enumerators
+    ROMANS = ["I", "II", "III", "IV"]
 
     def __init__(self, begin, end):
         self.begin = int(begin)
@@ -20,8 +21,7 @@ class Period(object):
         return self.end - self.begin + 1
     
     def __str__(self):
-        romans = ["I", "II", "III", "IV"]
-        return romans[self.begin-1] + '-' + romans[self.end-1] 
+        return self.ROMANS[self.begin-1] + '-' + self.ROMANS[self.end-1] 
     
     '''
     COMPARITIONS

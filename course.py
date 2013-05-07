@@ -16,6 +16,9 @@ class Course(object):
         self.description = description # Course description
         self.prerequisites = prerequisites # WHich courses should the student have completed before attending this course
         
+    def courseLength(self):
+        return self.period.length()
+        
     def __str__(self):
         # TODO: add period tostring
         string = self.name + ': ' + self.ects + 'op, ' + self.period.__str__() + ', ' + self.description + ', Esitiedot: ' 

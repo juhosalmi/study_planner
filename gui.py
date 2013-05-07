@@ -5,6 +5,7 @@ from PyQt4.QtCore import pyqtSlot,SIGNAL,SLOT
 import sys
 from studyPlan import StudyPlan
 from plannerIO import PlannerIO
+from period import Period
             
 class MainWindow(QtGui.QMainWindow):
     
@@ -70,21 +71,26 @@ class StudyPlanner(QtGui.QWidget):
 #        print self.grid.itemAtPosition(2,5).widget().title
 #        print range(1, 1)
         
+        
     def drawCourses(self):
+        creditsPerPeriod = self.studyPlan.listCreditsPerPeriod()
         for year in range(0, len(self.studyPlan.schedule)):
-            syear = QtGui.QPushButton(str(year+1))
+            syear = QtGui.QPushButton('Vuosi ' + str(year+1) + ' (' + str(sum(creditsPerPeriod[year])) + 'op)')
             self.grid.addWidget(syear, 0, year*4, 1, 4)
-            I = QtGui.QPushButton('I')
-            II = QtGui.QPushButton('II')
-            III = QtGui.QPushButton('III')
-            IV = QtGui.QPushButton('IV')
-            self.grid.addWidget(I, 1, year*4)
-            self.grid.addWidget(II, 1, year*4+1)
-            self.grid.addWidget(III, 1, year*4+2)
-            self.grid.addWidget(IV, 1, year*4+3)
+            for i in range(0, 4):
+                periodButton = QtGui.QPushButton(Period.ROMANS[i] + ' (' + str(creditsPerPeriod[year][i]) + 'op)')
+                if creditsPerPeriod[year][i] > self.studyPlan.maxCreditsPerPeriod:
+                    periodButton.setStyleSheet('QPushButton {color: purple}')
+                elif creditsPerPeriod[year][i] < self.studyPlan.minCreditsPerPeriod:
+                    periodButton.setStyleSheet('QPushButton {color: red}')
+                self.grid.addWidget(periodButton, 1, year*4+i)
             for courseName, period in self.studyPlan.schedule[year].iteritems():
                 col = year*4+period.begin-1
                 button = CourseButton(courseName, self)
+                if self.studyPlan.hasSatisfiedPrerequisites(courseName):
+                    button.setStyleSheet('QPushButton {color: blue}')
+                else:
+                    button.setStyleSheet('QPushButton {color: orange}')
                 colspan = period.length()
                 for row in range(2, self.grid.rowCount()+1):
                     if row == self.grid.rowCount():
