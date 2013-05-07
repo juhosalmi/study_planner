@@ -20,7 +20,6 @@ class Course(object):
         return self.period.length()
         
     def __str__(self):
-        # TODO: add period tostring
         string = self.name + ': ' + self.ects + 'op, ' + self.period.__str__() + ', ' + self.description + ', Esitiedot: ' 
         for each in self.prerequisites:
             string = string + each + ', '
